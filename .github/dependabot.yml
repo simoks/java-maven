@@ -3,7 +3,7 @@ version: 2
 updates:
   # Dépendances Maven (Java)
   - package-ecosystem: "maven"
-    directory: "/"          # Chemin du pom.xml
+    directory: "/maven"          # Chemin du pom.xml
     schedule:
       interval: "weekly"    # daily | weekly | monthly
       day: "monday"
