@@ -35,7 +35,10 @@ pipeline {
         }
         stage('Dependency-Check') {
             steps {
-                sh 'mvn org.owasp:dependency-check-maven:check'
+                dir('maven') { 
+                    // Run Maven commands 
+                        sh 'mvn org.owasp:dependency-check-maven:check'
+                    }
             }
             post {
                 always {
