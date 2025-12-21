@@ -4,7 +4,7 @@ public class Hello {
 	
 	public static void main(String[] args)
     {
-        System.out.println("Hello DevOps, Today is Sunday afternoon V9...");
+        System.out.println("Hello DevOps, Today is Wednesday afternoon V9...");
     }
 
 }
