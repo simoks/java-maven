@@ -54,7 +54,7 @@ pipeline {
                     // Exécuter le jar généré
                     dir('maven') { 
                     // Run Maven commands 
-                        sh 'java -jar target/maven-1.1.1-SNAPSHOT.jar'
+                        sh 'java -jar target/maven-0.0.1-SNAPSHOT.jar'
                     }
                 }
             }
@@ -63,7 +63,7 @@ pipeline {
         stage('Notify Slack'){
             steps {
                 script {
-                    def artifactPath = "target/maven-1.1.1-SNAPSHOT.jar"
+                    def artifactPath = "target/maven-0.0.1-SNAPSHOT.jar"
                     def pipelineName = env.JOB_NAME.split('/')[0]
                     def artifactURL = "${env.JENKINS_URL}/job/${pipelineName}/job/main/${env.BUILD_NUMBER}/artifact/${artifactPath}"
 
