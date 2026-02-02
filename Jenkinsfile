@@ -69,7 +69,7 @@ pipeline {
 
                     //Add channel name
                     
-                    slackSend channel: 'devops',
+                    slackSend channel: 'devops-ensi',
                     message: "Un nouveau build Java est disponible: ---> Resultat: ${currentBuild.currentResult}, Job: ${env.JOB_NAME}, Build: ${env.BUILD_NUMBER} \n <${artifactURL}|Cliquer ici pour télécharger>"
                 
                 }
