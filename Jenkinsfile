@@ -2,13 +2,8 @@ pipeline {
     agent {
         docker {
             image 'my-maven-git:latest'
-            // Utiliser un volume Docker pour Maven plutôt que $HOME
             args '-v $WORKSPACE:$WORKSPACE -v maven-repo:/root/.m2 -w $WORKSPACE'
         }
-    }
-    options {
-        // Supprime le workspace automatiquement avant chaque build
-        skipDefaultCheckout(false)
     }
 
     environment {
@@ -16,28 +11,21 @@ pipeline {
         IMAGE_TAG  = "commit-${GIT_COMMIT}"
     }
 
-    options {
-        // Supprime le workspace automatiquement avant chaque build
-        skipDefaultCheckout(false)
-    }
-    
     stages {
 
         stage('Checkout') {
-    steps {
-        deleteDir() // workspace propre
-
-        checkout([
-            $class: 'GitSCM',
-            branches: [[name: '*/release']],
-            userRemoteConfigs: [[
-                url: 'https://github.com/simoks/java-maven.git',
-                credentialsId: 'github_token'
-            ]]
-        ])
-    }
-}
-
+            steps {
+                deleteDir()
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: '*/release']],
+                    userRemoteConfigs: [[
+                        url: 'https://github.com/simoks/java-maven.git',
+                        credentialsId: 'github_token'
+                    ]]
+                ])
+            }
+        }
 
         stage('Build & Security Scan') {
             steps {
@@ -49,9 +37,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh """
-                    docker build -t $IMAGE_NAME:$IMAGE_TAG .
-                """
+                sh "docker build -t $IMAGE_NAME:$IMAGE_TAG ."
             }
         }
 
@@ -62,18 +48,14 @@ pipeline {
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
-                    sh '''
-                        echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-                    '''
+                    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
                 }
             }
         }
 
         stage('Push Docker Image') {
             steps {
-                sh """
-                    docker push $IMAGE_NAME:$IMAGE_TAG
-                """
+                sh "docker push $IMAGE_NAME:$IMAGE_TAG"
             }
         }
     }
