@@ -24,14 +24,20 @@ pipeline {
     stages {
 
         stage('Checkout') {
-            steps {
-                // Nettoyer le workspace proprement
-                deleteDir()
-                
-                // Checkout avec les credentials Jenkins configurés
-                checkout scm
-            }
-        }
+    steps {
+        deleteDir() // workspace propre
+
+        checkout([
+            $class: 'GitSCM',
+            branches: [[name: '*/release']],
+            userRemoteConfigs: [[
+                url: 'https://github.com/simoks/java-maven.git',
+                credentialsId: 'github_token'
+            ]]
+        ])
+    }
+}
+
 
         stage('Build & Security Scan') {
             steps {
