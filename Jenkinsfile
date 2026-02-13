@@ -8,17 +8,8 @@ pipeline {
 
     stages {
 
-        options {
-        // Supprime le workspace automatiquement avant chaque build
-        skipDefaultCheckout(false)
-    }
-    stages {
         stage('Checkout') {
             steps {
-                // Nettoyer le workspace proprement
-                deleteDir()
-                
-                // Checkout avec les credentials Jenkins configurés
                 checkout scm
             }
         }
