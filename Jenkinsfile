@@ -1,5 +1,15 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'my-maven-git:latest'
+            // Utiliser un volume Docker pour Maven plutôt que $HOME
+            args '-v maven-repo:/root/.m2'
+        }
+    }
+    options {
+        // Supprime le workspace automatiquement avant chaque build
+        skipDefaultCheckout(false)
+    }
 
     environment {
         IMAGE_NAME = "alpha212/backend"
