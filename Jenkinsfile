@@ -3,7 +3,7 @@ pipeline {
         docker {
             image 'my-maven-git:latest'
             // Utiliser un volume Docker pour Maven plutôt que $HOME
-            args '-v maven-repo:/root/.m2'
+            args '-v $WORKSPACE:$WORKSPACE -v maven-repo:/root/.m2 -w $WORKSPACE'
         }
     }
     options {
