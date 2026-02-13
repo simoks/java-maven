@@ -15,9 +15,11 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git branch: 'release',
-                    credentialsId: 'github_token',
-                    url: 'https://github.com/simoks/java-maven.git'
+                // Nettoyer le workspace proprement
+                deleteDir()
+                
+                // Checkout avec les credentials Jenkins configurés
+                checkout scm
             }
         }
 
