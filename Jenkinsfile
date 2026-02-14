@@ -1,5 +1,5 @@
 pipeline {
-    agent any // Agent avec Docker installé pour le build/push Docker
+    agent any // Utilise le conteneur Jenkins actuel
 
     environment {
         IMAGE_NAME = "alpha212/backend"
@@ -8,15 +8,15 @@ pipeline {
 
     stages {
 
-        stage('Checkout & Build Maven') {
-            agent {
-                docker {
-                    image 'my-maven-git:latest'
-                    args '-v $WORKSPACE:$WORKSPACE -v maven-repo:/root/.m2 -w $WORKSPACE'
-                }
-            }
+        stage('Checkout') {
             steps {
+                // Récupérer automatiquement la branche qui déclenche le build
                 checkout scm
+            }
+        }
+
+        stage('Build & Security Scan') {
+            steps {
                 dir('maven') {
                     echo "Building Maven project"
                     sh 'mvn clean verify'
@@ -50,7 +50,7 @@ pipeline {
                     echo "Pushing Docker image $IMAGE_NAME:$IMAGE_TAG"
                     sh "docker push $IMAGE_NAME:$IMAGE_TAG"
 
-                    // Tag latest uniquement pour main/release
+                    // Tag latest uniquement pour main ou release
                     if (env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'release') {
                         sh "docker tag $IMAGE_NAME:$IMAGE_TAG $IMAGE_NAME:latest"
                         sh "docker push $IMAGE_NAME:latest"
