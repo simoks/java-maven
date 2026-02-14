@@ -20,7 +20,8 @@ FROM eclipse-temurin:8-jre
 
 WORKDIR /app
 
-# Prends le fichier .jar généré dans target/ et copie-le dans l'image finale en le renommant app.jar
+# On prends le fichier .jar généré dans target/ 
+#et on le copie dans l'image finale en le renommant app.jar
 COPY --from=build /app/target/*.jar app.jar
 
 RUN useradd -ms /bin/bash appuser
