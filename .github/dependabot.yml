@@ -6,8 +6,8 @@ updates:
     directory: "/maven"          # Chemin du pom.xml
     schedule:
       interval: "weekly"    # daily | weekly | monthly
-      day: "monday"
-      time: "06:00"
+      day: "thursday"
+      time: "19:00"
       timezone: "Africa/Casablanca"
 
     open-pull-requests-limit: 5
