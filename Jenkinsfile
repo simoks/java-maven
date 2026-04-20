@@ -14,7 +14,8 @@ steps {
 // clean the directory
 sh "rm -rf *"
 // Checkout the Git repository
-sh "git clone https://github.com/simoks/java-maven.git"
+//sh "git clone https://github.com/simoks/java-maven.git"
+  checkout scm
 }
 }
 stage('Build') {
